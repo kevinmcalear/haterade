@@ -1,0 +1,24 @@
+{
+	"manifest_version": 2,
+	"name": "Haterade",
+	"version": "1.0",
+	"description": "Allows you to remove trolling from your internetz.",
+	"browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+	"permissions": [
+		"<all_urls>",
+		"webRequest",
+		"storage"
+	],
+	"content_scripts":
+	[
+		{
+			"matches": ["*://*/*"],
+			"js": ["jQuery.js","content_script.js"],
+			"run_at": "document_end"
+		}
+	]
+}
+

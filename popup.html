@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Haterade Settings</title>
+    <style>
+      body {
+        min-width: 357px;
+        overflow-x: hidden;
+      }
+      .toggle {
+        display: block;
+        text-align: center;
+        margin-top: 40px;
+        user-select: none;
+      }
+
+      .toggle--checkbox {
+        display: none;
+      }
+
+      .toggle--btn {
+        display: block;
+        margin: 0 auto;
+        font-size: 1.4em;
+        transition: all 350ms ease-in;
+      }
+      .toggle--btn:hover {
+        cursor: pointer;
+      }
+
+      .toggle--btn, .toggle--btn:before, .toggle--btn:after,
+      .toggle--checkbox,
+      .toggle--checkbox:before,
+      .toggle--checkbox:after,
+      .toggle--feature,
+      .toggle--feature:before,
+      .toggle--feature:after {
+        transition: all 250ms ease-in;
+      }
+      .toggle--btn:before, .toggle--btn:after,
+      .toggle--checkbox:before,
+      .toggle--checkbox:after,
+      .toggle--feature:before,
+      .toggle--feature:after {
+        content: '';
+        display: block;
+      }
+      .toggle--like .toggle--btn {
+        position: relative;
+        height: 70px;
+        width: 125px;
+        border-radius: 70px;
+      }
+      .toggle--like .toggle--btn:before {
+        position: absolute;
+        top: 2px;
+        left: 4px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+      }
+      .toggle--like {
+        position: relative;
+      }
+      .toggle--like .toggle--btn {
+        border: 5px solid #0865B0;
+        background-color: #3498db;
+      }
+      .toggle--like .toggle--btn:before {
+        background-color: #f2dd68;
+        border: 5px solid #e5ce5e;
+      }
+      .toggle--like .toggle--feature {
+        position: absolute;
+        left: 14px;
+        top: 32%;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: #995710;
+        box-shadow: 28px 0 0 0 #995710;
+      }
+      .toggle--like .toggle--feature:before {
+        position: absolute;
+        left: 0;
+        top: 11px;
+        width: 36px;
+        height: 17px;
+        background-color: #995710;
+        border-radius: 36px 36px 0 0;
+      }
+      .toggle--like .toggle--feature:after {
+        position: absolute;
+        left: 9px;
+        top: 21px;
+        width: 17px;
+        height: 7px;
+        background-color: #d8aa2b;
+        border-radius: 17px 17px 0 0;
+      }
+      .toggle--like .toggle--checkbox:checked + .toggle--btn {
+        background-color: #e25d5d;
+        border: 5px solid #AD1000;
+      }
+      .toggle--like .toggle--checkbox:checked + .toggle--btn:before {
+        transform: translate(51px, 0);
+      }
+      .toggle--like .toggle--checkbox:checked + .toggle--btn .toggle--feature {
+        transform: translate(53px, 0);
+      }
+      .toggle--like .toggle--checkbox:checked + .toggle--btn .toggle--feature:before {
+        border-radius: 0 0 36px 36px;
+        top: 11px;
+      }
+      .toggle--like .toggle--checkbox:checked + .toggle--btn .toggle--feature:after {
+        top: 21px;
+        border-radius: 50%/50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Haterade Settings</h1>
+    <div class="toggle toggle--like">
+      <input type="checkbox" id="toggle--like" class="toggle--checkbox">
+      <label class="toggle--btn" for="toggle--like"><span class="toggle--feature"></span></label>
+    </div>
+    <script src="jQuery.js"></script>
+    <script src="content_script.js"></script>
+  </body>
+</html>
