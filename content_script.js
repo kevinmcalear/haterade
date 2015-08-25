@@ -1,9 +1,13 @@
+jQuery.ajaxSetup({async:false});
+
 var useHaterade,
     currentUrl  = window.location.href;
     twitter     = "twitter.com",
     youTube     = "youtube.com",
     hackerNews  = "news.ycombinator.com",
-    reddit      = "reddit.com";
+    reddit      = "reddit.com",
+    ratingUrl   = "https://hater-api.herokuapp.com/score-comment?comment=",
+    tolerance   = 0.4,
     compliments = [
       "You have very smooth hair.",
       "You deserve a promotion.",
@@ -242,9 +246,34 @@ var useHaterade,
       "You make me want to frolic in a field."
     ];
 
+$("#tolerance").val(tolerance);
+$("#toleranceNum").text(tolerance*100+"%");
+
+chrome.storage.local.get(null,function(items){
+  useHaterade = items.haterade;
+  newTolerance = items.tolerance;
+  if (useHaterade != undefined) {
+    var checkedEl = document.getElementById('toggle--like');
+    if (checkedEl) {
+      checkedEl.checked = useHaterade;
+    }
+  };
+  if(newTolerance != undefined) {
+    tolerance = newTolerance;
+    $("#tolerance").val(tolerance);
+    $("#toleranceNum").text(tolerance*100+"%");
+  }
+  if(useHaterade) {
+    runHaterade();
+  }
+});
+
+
+
 var getRandomCompliment = function () {
   return compliments[Math.floor(Math.random() * compliments.length)]
 }
+
 var runHaterade = function() {
   if( ~currentUrl.indexOf(twitter) ){
     var $comments = $("[data-item-type='tweet']");
@@ -252,45 +281,99 @@ var runHaterade = function() {
       var $newComments = $("[data-item-type='tweet']");
       if ($comments.length != $newComments.length) {
         $newComments.each(function() {
-        $(this).find('.tweet-text').text(getRandomCompliment());
-          $(this).find('.avatar').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
+          $comment = $(this);
+          if (tolerance == 1) {
+          } else if (tolerance == 0) {
+            $comment.find('.tweet-text').text(getRandomCompliment());
+            $comment.find('.avatar').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');;
+          } else {
+            $.get(ratingUrl + $comment.html(),function(data){
+              if (data.score >= tolerance) {
+                $comment.find('.tweet-text').text(getRandomCompliment());
+                $comment.find('.avatar').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');;
+              }
+            });
+          }
         });
-        $("div.is-preview").each(function(){
-          $(this).children().attr('src','https://s3.amazonaws.com/rapgenius/cats-animals-kittens-background.jpg');
-        });
+        // $("div.is-preview").each(function(){
+        //   $(this).children().attr('src','https://s3.amazonaws.com/rapgenius/cats-animals-kittens-background.jpg');
+        // });
         $comments = $newComments;
       };
     }, 1000);
     $comments.each(function() {
-      $(this).find('.tweet-text').text(getRandomCompliment());
-      $(this).find('.avatar').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
+      $comment = $(this);
+      if (tolerance == 1) {
+      } else if (tolerance == 0) {
+        $comment.find('.tweet-text').text(getRandomCompliment());
+        $comment.find('.avatar').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');;
+      } else {
+        $.get(ratingUrl + $comment.html(),function(data){
+          if (data.score >= tolerance) {
+            $comment.find('.tweet-text').text(getRandomCompliment());
+            $comment.find('.avatar').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');;
+          }
+        });
+      }
     });
-    setTimeout(function(){
-      $("div.is-preview").each(function(){
-        $(this).children().data('img-src','https://s3.amazonaws.com/rapgenius/cats-animals-kittens-background.jpg');
-        $(this).children().attr('src','https://s3.amazonaws.com/rapgenius/cats-animals-kittens-background.jpg');
-      });
-    }, 1000);
+    // setTimeout(function(){
+    //   $("div.is-preview").each(function(){
+    //     $(this).children().data('img-src','https://s3.amazonaws.com/rapgenius/cats-animals-kittens-background.jpg');
+    //     $(this).children().attr('src','https://s3.amazonaws.com/rapgenius/cats-animals-kittens-background.jpg');
+    //   });
+    // }, 1000);
   } else if ( ~currentUrl.indexOf(youTube) ) {
     var $comments = $(".comment-entry");
     setInterval(function(){
       var $newComments = $(".comment-entry");
       if ($comments.length != $newComments.length) {
         $newComments.each(function() {
-          $(this).find('.comment-text-content').text(getRandomCompliment());
-          $(this).find('.user-photo').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
+          $comment = $(this);
+          if (tolerance == 1) {
+          } else if (tolerance == 0) {
+            $comment.find('.comment-text-content').text(getRandomCompliment());
+            $comment.find('.user-photo').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
+          } else {
+            $.get(ratingUrl + $comment.html(),function(data){
+              if (data.score >= tolerance) {
+                $comment.find('.comment-text-content').text(getRandomCompliment());
+                $comment.find('.user-photo').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
+              }
+            });
+          }
         });
         $comments = $newComments;
       };
     }, 1000);
     $comments.each(function() {
-      $(this).find('.comment-text-content').text(getRandomCompliment());
-      $(this).find('.user-photo').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
+      $comment = $(this);
+      if (tolerance == 1) {
+      } else if (tolerance == 0) {
+        $comment.find('.comment-text-content').text(getRandomCompliment());
+        $comment.find('.user-photo').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
+      } else {
+        $.get(ratingUrl + $comment.html(),function(data){
+          if (data.score >= tolerance) {
+            $comment.find('.comment-text-content').text(getRandomCompliment());
+            $comment.find('.user-photo').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
+          }
+        });
+      }
     });
   } else if ( ~currentUrl.indexOf(hackerNews) ) {
     var $comments = $(".athing");
     $comments.each(function() {
-      $(this).find(".c00").html(getRandomCompliment());
+      $comment = $(this).find(".c00");
+      if (tolerance == 1) {
+      } else if (tolerance == 0) {
+        $comment.html(getRandomCompliment());
+      } else {
+        $.get(ratingUrl + $comment.html(),function(data){
+          if (data.score >= tolerance) {
+            $comment.html(getRandomCompliment());
+          }
+        });
+      }
     });
   } else if ( ~currentUrl.indexOf(reddit) ) {
     var $comments = $(".comment");
@@ -298,34 +381,49 @@ var runHaterade = function() {
       var $newComments = $(".comment");
       if ($comments.length != $newComments.length) {
         $newComments.each(function() {
-          $(this).children(".entry").find('.md').text(getRandomCompliment());
+          $comment = $(this).children(".entry").find('.md');
+          if (tolerance == 1) {
+          } else if (tolerance == 0) {
+            $comment.text(getRandomCompliment());
+          } else {
+            $.get(ratingUrl + $comment.text(),function(data){
+              if (data.score >= tolerance) {
+                $comment.text(getRandomCompliment());
+              }
+            });
+          }
         });
         $comments = $newComments;
       };
     }, 1000);
 
     $comments.each(function() {
-      $(this).children(".entry").find('.md').text(getRandomCompliment());
+      $comment = $(this).children(".entry").find('.md');
+        if (tolerance == 1) {
+        } else if (tolerance == 0) {
+          $comment.text(getRandomCompliment());
+        } else {
+          $.get(ratingUrl + $comment.text(),function(data){
+            if (data.score >= tolerance) {
+              $comment.text(getRandomCompliment());
+            }
+          });
+        }
     });
   };
 };
 
-chrome.storage.local.get('haterade',function(items){
-  useHaterade = items.haterade;
-  if (useHaterade != undefined) {
-    var checkedEl = document.getElementById('toggle--like');
-    if (checkedEl) {
-      checkedEl.checked = useHaterade;
-    }
-  };
-  if(useHaterade) {
-    runHaterade();
-  }
-});
+
 
 $('#toggle--like').on('click', function(){
   var checked = document.getElementById('toggle--like').checked;
   chrome.storage.local.set({'haterade': checked});
+});
+
+$("#tolerance").on('change', function(){
+  tolerance = parseFloat($(this).val());
+  chrome.storage.local.set({'tolerance': tolerance});
+  $("#toleranceNum").text($(this).val()*100+"%");
 });
 
 
