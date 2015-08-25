@@ -261,7 +261,7 @@ chrome.storage.local.get(null,function(items){
   if(newTolerance != undefined) {
     tolerance = newTolerance;
     $("#tolerance").val(tolerance);
-    $("#toleranceNum").text(tolerance*100+"%");
+    $("#toleranceNum").text(Math.round(tolerance*100)+"%");
   }
   if(useHaterade) {
     runHaterade();
@@ -420,10 +420,10 @@ $('#toggle--like').on('click', function(){
   chrome.storage.local.set({'haterade': checked});
 });
 
-$("#tolerance").on('change', function(){
+$("#tolerance").on('input', function(){
   tolerance = parseFloat($(this).val());
   chrome.storage.local.set({'tolerance': tolerance});
-  $("#toleranceNum").text($(this).val()*100+"%");
+  $("#toleranceNum").text(Math.round($(this).val()*100)+"%");
 });
 
 
