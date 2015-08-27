@@ -277,6 +277,7 @@ var getRandomCompliment = function () {
 var runHaterade = function() {
   if( ~currentUrl.indexOf(twitter) ){
     var $comments = $("[data-item-type='tweet']");
+
     setInterval(function(){
       var $newComments = $("[data-item-type='tweet']");
       if ($comments.length != $newComments.length) {
@@ -287,7 +288,7 @@ var runHaterade = function() {
             $comment.find('.tweet-text').text(getRandomCompliment());
             $comment.find('.avatar').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');;
           } else {
-            $.get(ratingUrl + $comment.html(),function(data){
+            $.get(ratingUrl + $comment.find('.tweet-text').text(),function(data){
               if (data.score >= tolerance) {
                 $comment.find('.tweet-text').text(getRandomCompliment());
                 $comment.find('.avatar').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');;
@@ -301,6 +302,8 @@ var runHaterade = function() {
         $comments = $newComments;
       };
     }, 1000);
+
+
     $comments.each(function() {
       $comment = $(this);
       if (tolerance == 1) {
@@ -308,7 +311,7 @@ var runHaterade = function() {
         $comment.find('.tweet-text').text(getRandomCompliment());
         $comment.find('.avatar').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');;
       } else {
-        $.get(ratingUrl + $comment.html(),function(data){
+        $.get(ratingUrl + $comment.find('.tweet-text').text(),function(data){
           if (data.score >= tolerance) {
             $comment.find('.tweet-text').text(getRandomCompliment());
             $comment.find('.avatar').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');;
@@ -334,7 +337,7 @@ var runHaterade = function() {
             $comment.find('.comment-text-content').text(getRandomCompliment());
             $comment.find('.user-photo').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
           } else {
-            $.get(ratingUrl + $comment.html(),function(data){
+            $.get(ratingUrl + $comment.find('.comment-text-content').text(),function(data){
               if (data.score >= tolerance) {
                 $comment.find('.comment-text-content').text(getRandomCompliment());
                 $comment.find('.user-photo').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
@@ -352,7 +355,7 @@ var runHaterade = function() {
         $comment.find('.comment-text-content').text(getRandomCompliment());
         $comment.find('.user-photo').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
       } else {
-        $.get(ratingUrl + $comment.html(),function(data){
+        $.get(ratingUrl + $comment.find('.comment-text-content').text(),function(data){
           if (data.score >= tolerance) {
             $comment.find('.comment-text-content').text(getRandomCompliment());
             $comment.find('.user-photo').attr('src','//www.reactionface.info/sites/default/files/images/1287666826226.png');
